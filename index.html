@@ -5,103 +5,328 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>親子工作坊_視覺化學習</title>
     <style>
-        :root {
-            --dark-blue: #003366;
-            --white: #ffffff;
-            --light-blue: #e3f2fd;
-            --accent-blue: #bbdefb;
-            --grey: #f4f4f4;
-            --teal: #00796b;
-            --green: #2e7d32;
+    /* 1. 根據官網精準定義品牌色彩與設定 */
+    :root {
+        --goai-blue: #022169;       /* 官網專屬核心深藍色 */
+        --goai-blue-hover: #12338f; /* 懸停時的藍色 */
+        --goai-yellow: #fecf13;     /* 亮黃色 */
+        --goai-green: #3d7a3a;      /* 截圖中的已複製草綠色 */
+        --card-green: #00cd7a;      /* 卡片裝飾綠 */
+        --goai-orange: #ff8b12;     /* 官方橘色 */
+        --white: #ffffff;
+        --grey: #f4f6fa;            /* 完美還原官網輕盈、乾淨的背景底色 */
+    }
+
+    body { 
+        font-family: "PingFang HK", "Helvetica Neue", "Microsoft JhengHei", sans-serif; 
+        margin: 0; 
+        background: var(--grey); 
+        color: #1a202c; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    /* 2. 頂部 Banner 區域 */
+    header { 
+        width: 100%; 
+        background: var(--goai-blue); 
+        color: var(--white); 
+        padding: 8px 20px; 
+        box-sizing: border-box; 
+        position: relative;
+        overflow: hidden;
+        border-bottom-left-radius: 32px;
+        border-bottom-right-radius: 32px;
+        box-shadow: 0 4px 15px rgba(2, 33, 105, 0.1);
+    }
+
+    .header-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px; 
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .header-logo {
+        height: 240px; 
+        width: auto;
+        display: block;
+        filter: drop-shadow(0px 4px 15px rgba(0,0,0,0.2)); 
+    }
+
+    .header-text {
+        text-align: left; 
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    header h1 { 
+        margin: 0; 
+        font-size: 2rem; 
+        font-weight: 500;
+        letter-spacing: 1px; 
+    }
+    header p { 
+        margin: 0; 
+        color: #e2e8f0; 
+        font-size: 0.9rem; 
+        line-height: 1.4; 
+    }
+    .highlight-yellow {
+        color: var(--goai-yellow);
+        font-weight: bold;
+    }
+
+    .cartoon-shape {
+        position: absolute;
+        border-radius: 30px;
+        padding: 8px 18px;
+        font-size: 13px;
+        font-weight: bold;
+        box-shadow: 0 6px 0 rgba(0,0,0,0.15);
+        z-index: 1;
+    }
+    .shape-monster1 { left: 3%; top: 20%; background: var(--card-green); color: white; transform: rotate(-8deg); }
+    .shape-monster2 { right: 3%; bottom: 20%; background: var(--goai-orange); color: white; transform: rotate(10deg); }
+
+    /* 3. 主導航欄 */
+    .main-nav { 
+        display: flex; 
+        flex-direction: column; 
+        background: transparent; 
+        width: 95%; 
+        max-width: 1200px; 
+        gap: 14px; 
+        padding: 30px 0;
+    }
+    
+    .nav-item {
+        background: var(--white);
+        border: 2px solid #e2e8f0;
+        border-radius: 50px; 
+        padding: 18px 28px;
+        text-align: center;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        font-size: 1.1rem;
+        color: var(--goai-blue);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    }
+    .nav-item:hover:not(.active) {
+        transform: translateY(-2px);
+        border-color: var(--goai-blue);
+        background-color: #f0f4ff;
+    }
+    .nav-item.active { 
+        background-color: var(--goai-blue) !important; 
+        color: var(--white) !important; 
+        border-color: var(--goai-blue) !important;
+        border-radius: 50px !important; 
+        box-shadow: 0 8px 20px rgba(10, 34, 102, 0.18);
+    }
+
+    /* 內容區塊 */
+    .tab-content { display: none; padding: 10px 15px 40px; width: 100%; max-width: 1200px; box-sizing: border-box; }
+    .tab-content.active { display: block; }
+
+    /* 子導航按鈕 */
+    .sub-nav { margin-bottom: 30px; text-align: center; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .sub-btn {
+        padding: 10px 24px; 
+        border: 2px solid #e2e8f0; 
+        background: var(--white); 
+        border-radius: 50px; 
+        cursor: pointer; 
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #4a5568;
+        transition: all 0.2s;
+    }
+    .sub-btn:hover:not(.active) { background: #edf2f7; color: var(--goai-blue); }
+    .sub-btn.active { 
+        background: var(--goai-blue); 
+        color: white; 
+        border-color: var(--goai-blue); 
+        box-shadow: 0 5px 12px rgba(10, 34, 102, 0.15);
+    }
+
+    /* 4. 卡片排版與邊框色 */
+    .column-wrapper { display: flex; flex-direction: column; gap: 25px; }
+    .column {
+        background: var(--white); 
+        padding: 30px; 
+        border-radius: 24px; 
+        box-shadow: 0 10px 25px rgba(10, 34, 102, 0.03); 
+        box-sizing: border-box;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .column:hover { 
+        box-shadow: 0 16px 35px rgba(10, 34, 102, 0.07);
+    }
+    
+    .card-yellow { border-top: 8px solid var(--goai-yellow); } /* 新增黃色邊框樣式 */
+    .card-blue { border-top: 8px solid var(--goai-blue); }
+    .card-green { border-top: 8px solid var(--card-green); }
+    .card-orange { border-top: 8px solid var(--goai-orange); }
+
+    .column h3 { 
+        margin-top: 0; 
+        color: var(--goai-blue); 
+        font-size: 1.35rem; 
+        font-weight: 800;
+        border-bottom: 2px solid #f1f5f9; 
+        padding-bottom: 15px; 
+    }
+
+    .prompt-box { background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 16px; padding: 18px; margin-bottom: 20px; }
+    .prompt-text { height: 180px; overflow-y: auto; font-size: 0.98rem; white-space: pre-wrap; color: #334155; line-height: 1.6; }
+
+    /* 5. 行動按鈕 */
+    .copy-btn, .btn-link { 
+        width: 100%; 
+        height: 56px; 
+        background: var(--goai-blue); 
+        color: white; 
+        border: 2px solid var(--goai-blue); 
+        border-radius: 50px; 
+        cursor: pointer; 
+        font-size: 1.15rem; 
+        font-weight: 700; 
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        box-shadow: 0 4px 12px rgba(10, 34, 102, 0.12);
+        box-sizing: border-box;
+    }
+    .copy-btn:hover, .btn-link:hover { 
+        background: var(--goai-blue-hover); 
+        border-color: var(--goai-blue-hover);
+        transform: translateY(-2px); 
+        box-shadow: 0 6px 18px rgba(10, 34, 102, 0.2);
+    }
+    .copy-btn:active, .btn-link:active { transform: scale(0.98); }
+
+    .copied { 
+        background: var(--goai-green) !important; 
+        border-color: var(--goai-green) !important; 
+        color: var(--white) !important;
+        box-shadow: none !important; 
+        transform: none !important;
+    }
+
+    .copy-mini { 
+        background: #edf2f7; 
+        color: var(--goai-blue); 
+        border: 1.5px solid #edf2f7; 
+        border-radius: 50px; 
+        cursor: pointer; 
+        padding: 8px 20px; 
+        font-size: 0.9rem; 
+        font-weight: 700;
+        transition: all 0.15s;
+        box-sizing: border-box;
+    }
+    .copy-mini:hover { background: var(--goai-blue); color: white; border-color: var(--goai-blue); }
+    .copy-mini.copied {
+        background: var(--goai-green) !important; 
+        border-color: var(--goai-green) !important;
+        color: white !important;
+    }
+
+    .extra-section { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 18px; margin-top: 20px; }
+    .extra-title { font-weight: bold; font-size: 1rem; margin-bottom: 12px; color: var(--goai-blue); }
+    .extra-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem; }
+    .extra-item:last-child { border-bottom: none; }
+
+    .sub-section { display: none; }
+    .sub-section.active { display: block; }
+
+    /* RWD 響應式 */
+    @media (max-width: 768px) {
+       header {
+        padding: 5px 15px 15px;
+    }
+        .header-container { flex-direction: column; text-align: center; gap: 0px; }
+        .header-logo { height: 240px !important; width: auto; margin: 0 auto !important; padding: 0 !important; margin-top: -30px !important; margin-bottom: -40px !important; }
+        .header-text { text-align: center; }
+        header h1 { font-size: 1.8rem; }
+        header p { font-size: 0.95rem; margin-bottom: 15px; }
+
+        .cartoon-shape {
+        position: relative;  
+        display: inline-block;
+        margin: 5px;
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+        bottom: auto !important;
+        transform: none !important;
+        order: -1;
+      }
+
+    }
+
+    @media (min-width: 800px) {
+        .main-nav { 
+            flex-direction: row; 
+            background: transparent; 
+            width: 95%;
+            max-width: 1200px;
+            padding: 35px 0;
+            gap: 0;
         }
-
-        body { font-family: -apple-system, "Segoe UI", sans-serif; margin: 0; background: var(--grey); color: #333; }
-
-        /* 標題區域 */
-        header { background-color: var(--dark-blue); color: var(--white); padding: 25px 15px; text-align: center; }
-        header h1 { margin: 0; font-size: 1.6rem; letter-spacing: 1px; }
-        header p { margin: 12px 0 0; opacity: 0.9; font-size: 0.9rem; line-height: 1.5; }
-
-        /* 主導航 */
-        .main-nav { display: flex; background: var(--white); border-bottom: 1px solid #ddd; sticky; top: 0; z-index: 100; overflow-x: auto; }
-        .nav-item {
-            flex: 1; padding: 15px 10px; border: none; background: none; font-weight: bold; cursor: pointer;
-            transition: 0.3s; border-bottom: 4px solid transparent; white-space: nowrap; font-size: 0.95rem;
-        }
-        .nav-item.active { background-color: var(--light-blue); border-bottom-color: var(--dark-blue); color: var(--dark-blue); }
-
-        /* 內容區塊 */
-        .tab-content { display: none; padding: 20px; max-width: 1200px; margin: 0 auto; }
-        .tab-content.active { display: block; }
-
-        /* 子標籤切換 */
-        .sub-nav { margin-bottom: 20px; text-align: center; display: flex; justify-content: center; gap: 10px; }
-        .sub-btn {
-            padding: 8px 18px; border: 1px solid var(--dark-blue); 
-            background: var(--white); border-radius: 20px; cursor: pointer; font-size: 0.85rem;
-        }
-        .sub-btn.active { background: var(--accent-blue); font-weight: bold; }
-
-        /* 三欄排版 */
-        .column-wrapper { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 15px; scroll-snap-type: x mandatory; }
-        .column {
-            background: var(--white); min-width: 300px; flex: 1; 
-            padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            border-top: 4px solid var(--dark-blue); scroll-snap-align: start;
-        }
-        .column h3 { margin-top: 0; color: var(--dark-blue); font-size: 1.1rem; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-
-        /* Prompt 容器 */
-        .prompt-box { position: relative; background: #fafafa; border: 1px solid #ddd; border-radius: 5px; padding: 12px; margin-bottom: 15px; }
-        .prompt-text { height: 160px; overflow-y: auto; font-size: 0.85rem; white-space: pre-wrap; color: #444; line-height: 1.5; }
+        .nav-item { flex: 1; border-radius: 0; text-align: center; border: none; border-bottom: 4px solid transparent; box-shadow: none;}
+        .nav-item:first-child { border-top-left-radius: 16px; border-bottom-left-radius: 16px; }
+        .nav-item:last-child { border-top-right-radius: 16px; border-bottom-right-radius: 16px; }
+        .nav-item.active { border-radius: 16px !important; }
         
-        /* 按鈕樣式 */
-        .copy-btn { width: 100%; background: var(--teal); color: white; border: none; border-radius: 4px; cursor: pointer; padding: 12px; font-weight: bold; transition: 0.2s; }
-        .copy-btn:active { transform: scale(0.98); opacity: 0.9; }
-        .copy-mini { background: var(--dark-blue); color: white; border: none; border-radius: 3px; cursor: pointer; padding: 4px 8px; font-size: 0.75rem; }
-        .copied { background: var(--green) !important; }
-
-        /* 建議課題清單 */
-        .extra-section { background: #fdfdfd; border: 1px solid #eee; border-radius: 5px; padding: 10px; margin-top: 10px; }
-        .extra-title { font-weight: bold; font-size: 0.9rem; margin-bottom: 8px; display: block; color: #555; }
-        .extra-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px dashed #eee; font-size: 0.85rem; }
-        .extra-item:last-child { border-bottom: none; }
-
-        /* 活動一連結 */
-        .act1-container { text-align: center; padding: 60px 20px; background: white; border-radius: 10px; margin-top: 20px; }
-        .btn-link { display: inline-block; padding: 18px 40px; background: #4285f4; color: white; text-decoration: none; border-radius: 30px; font-weight: bold; font-size: 1.1rem; }
-
-        .sub-section { display: none; }
-        .sub-section.active { display: block; }
-    </style>
+        .column-wrapper { flex-direction: row; overflow-x: auto; scroll-snap-type: x mandatory; gap: 25px; padding-bottom: 15px; }
+        .column { min-width: 360px; flex: 1; }
+    }
+</style>
 </head>
 <body>
 
 <header>
-    <h1>親子工作坊_視覺化學習</h1>
-    <p>按活動選內容，複製後貼到 AI 平台或 Gemini Gems。<br>每個按鈕只複製該步驟需要貼上的文字。</p>
+    <div class="cartoon-shape shape-monster1">🤖 AI 學習</div>
+    <div class="cartoon-shape shape-monster2">✨ 親子共創</div>
+    
+    <div class="header-container">
+        <img src="logo.jpg" alt="JC GoAI Logo" class="header-logo">
+        <div class="header-text">
+            <h1>親子工作坊_視覺化學習</h1>
+            <p>按活動選內容，直接到 Gemini Gems 或複製內容後貼到 AI 平台。<br>每個按鈕只複製該步驟需要貼上的文字。</p>
+        </div>
+    </div>
 </header>
 
 <nav class="main-nav">
     <button class="nav-item active" onclick="switchMainTab('act1', this)">活動一 Flashcard 圖卡</button>
     <button class="nav-item" onclick="switchMainTab('act2', this)">活動二 4-panel Comic 四格漫畫</button>
-    <button class="nav-item" onclick="switchMainTab('act3', this)">活動二 Infographics 資訊圖表</button>
-</nav>
+    <button class="nav-item" onclick="switchMainTab('act3', this)">活動三 Infographics 資訊圖表</button> </nav>
 
 <section id="act1" class="tab-content active">
-   <div class="act1-container">
-    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
-        <h2 style="font-size: 1.3rem; color: var(--dark-blue);">活動一：Flashcard 圖卡 Gem</h2>
-        <p style="margin-bottom: 15px; color: #666; font-size: 0.9rem;">點擊下方按鈕前往專屬頁面：</p>
-        <a href="https://gemini.google.com/gem/151FZswr3FVKXtnqms49r1wxGwt-Vde5l?usp=sharing" target="_blank" class="btn-link">🚀 啟動「Flashcard Master」</a>
+    <div class="act1-container" style="max-width: 800px; margin: 0 auto;">
+    <div class="column card-orange" style="margin-bottom: 25px;">
+        <h2 style="font-size: 1.4rem; color: var(--goai-blue); margin-top:0; font-weight:800;">活動一：Flashcard 圖卡 Gem</h2>
+        <p style="margin-bottom: 20px; color: #666; font-size: 0.95rem;">點擊下方按鈕前往專屬頁面：</p>
+        <a href="https://gemini.google.com/gem/1INCQGRKvtxrW0Gf3KrDFCB9FjBpR51w0?usp=sharing" target="_blank" class="btn-link" style="background-color: var(--goai-orange); border-color: var(--goai-orange);">🚀 啟動「Flashcard Master」</a>
     </div>
 
-    <div style="margin: 20px 0; color: #bbb;">━━━━━ 🌟 ━━━━━</div>
+    <div style="text-align:center; margin: 30px 0; color: #cbd5e1; font-size:1.2rem;">🌟 🌟 🌟</div>
 
-    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px;">
-        <h2 style="font-size: 1.3rem; color: #2e7d32;">附加活動：四格漫畫 Gem</h2>
-        <p style="margin-bottom: 15px; color: #666; font-size: 0.9rem;">點擊下方按鈕前往專屬頁面：</p>
-        <a href="https://gemini.google.com/gem/1k7j3Eg7lq15NJsgP1OLRnVCY7Ba__G5D?usp=sharing" target="_blank" class="btn-link" style="background-color: #34a853;">🎨 啟動「四格漫畫家」</a>
+    <div class="column card-green">
+        <h2 style="font-size: 1.4rem; color: var(--goai-blue); margin-top:0; font-weight:800;">附加活動：四格漫畫 Gem</h2>
+        <p style="margin-bottom: 20px; color: #666; font-size: 0.95rem;">點擊下方按鈕前往專屬頁面：</p>
+        <a href="https://gemini.google.com/gem/1k7j3Eg7lq15NJsgP1OLRnVCY7Ba__G5D?usp=sharing" target="_blank" class="btn-link" style="background-color: var(--card-green); border-color: var(--card-green);">🎨 啟動「四格漫畫家」</a>
     </div>
 </div>
 </section>
@@ -153,7 +378,7 @@
                         { label: "S.2 牛頓第一定律", text: "年級：小五 S.2\n主題：牛頓第一定律（Law of Inertia）" }
                     ]
                 },
-                { title: "第二步：圖像生成", prompt: `我已經決定好設計細節：[請輸入代號或文字]\n請扮演 AI 視覺工程師，回顧對話紀錄中的內容與視覺設定，為我生成一張中文的四格漫畫（4-gpanel Comic）。` },
+                { title: "第二步：圖像生成", prompt: `我已經決定好設計細節：[請輸入代號或文字]\n請扮演 AI 視覺工程師，回顧對話紀錄中的內容與視覺設定，為我生成一張中文的四格漫畫（4-panel Comic）。` },
                 { title: "第三步：溫習與延伸", prompt: `根據以上四格漫畫，整合詳細溫習指令及親子活動/遊戲建議。` }
             ],
             book: [
@@ -172,11 +397,11 @@
                     prompt: `你現在是一位專業的資訊圖表（Infographic）設計顧問，擅長將深奧知識轉化為視覺化的教育素材 。\n請針對以下年級及主題，為我整理出適合製作成資訊圖表的內容：\n- 年級：[請輸入年級]\n- 主題：[請輸入主題]\n請針對以上資訊，提供以下內容：\n1. 構思內容：用一句話概括這張圖表要解決什麼問題, 並根據年級程度，提供 3-5 個最重要的核心知識點和解釋說明，為每個點設計一個「視覺隱喻」。\n2. 排版佈局：建議三種具體Infographics的構圖方式，並說明理由。\n3. 色彩與風格：建議4-6套配色方案，以及4-6種適合的藝術風格。\n請用繁體中文輸出，具備圖表特質，並所有項目標上編號，方便我直接用代號回應。`,
                     extra: [
                         { label: "P.4 簡易電路原理", text: "年級：小四 P.4\n主題：簡易電路原理 (電池、電線、燈泡)" },
-                        { label: "小五 光合作用", text: "年級：小五\n主題：光合作用 (植物能量轉換)" },
-                        { label: "小六 呼吸系統", text: "年級：小六\n主題：人體呼吸系統 (肺部運作原理)" },
-                        { label: "中一 細胞結構", text: "年級：中一\n主題：細胞結構 (動物 vs 植物細胞)" },
-                        { label: "中二 司法制度", text: "年級：中二\n主題：香港司法制度簡介 (法律的階梯)" },
-                        { label: "中三 全球暖化", text: "年級：中三\n主題：全球暖化 (鎖反應與回饋機制)" }
+                        { label: "P.5 光合作用", text: "年級：小五 P.5\n主題：光合作用 (植物能量轉換)" },
+                        { label: "P.6 呼吸系統", text: "年級：小六 P.6\n主題：人體呼吸系統 (肺部運作原理)" },
+                        { label: "S.1 細胞結構", text: "年級：中一 S.1\n主題：細胞結構 (動物 vs 植物細胞)" },
+                        { label: "S.2 司法制度", text: "年級：中二 S.2\n主題：香港司法制度簡介 (法律的階梯)" },
+                        { label: "S.3 全球暖化", text: "年級：中三 S.3\n主題：全球暖化 (鎖反應與回饋機制)" }
                     ]
                 },
                 { title: "第二步：圖像生成", prompt: `我已經決定好設計細節：[請輸入代號或文字]\n請扮演 AI 視覺工程師，回顧對話紀錄中的內容與視覺設定，為我生成一張中文的資訊圖表（Infographic）。` },
@@ -185,7 +410,13 @@
             book: [
                 {
                     title: "第一步：內容生成",
-                    prompt: `你現在是一位專業的資訊圖表（Infographic）設計顧問 ，擅長將深奧知識轉化為視覺化的教育素材 。\n請針對以下年級及資料，為我整理出適合製作成資訊圖表的內容：\n- 年級：[請輸入年級]\n- 參考資料：[請提供課本文字內容或上傳照片]\n請針對以上資訊，提供以下內容：\n1. 整理資料：用一句話概括這張圖表要解決什麼問題, 並根據年級程度，從資料/圖片中提取 3-5 個最重要的核心知識點，為每個點設計一個「視覺隱喻」。\n2. 排版佈局：建議三種具體Infographics的構圖方式，並說明理由。\n3. 色彩與風格：建議4-6套配色方案，以及4-6種適合的藝術風格。\n請用繁體中文輸出，具備圖表特質，並為所有項目標上編號，方便我直接用代號回應。`
+                    prompt: `你現在是一位專業的資訊圖表（Infographic）設計顧問 ，擅長將深奧知識轉化為視覺化的教育素材 。\n請針對以下年級及資料，為我整理出適合製作成資訊圖表的內容：\n- 年級：[請輸入年級]\n- 參考資料：[請提供課本文字內容或上傳照片]\n請針對以上資訊，提供以下內容：\n1. 整理資料：用一句話概括這張圖表要解決什麼問題, 並根據年級程度，從資料/圖片中提取 3-5 個最重要的核心知識點，為每個點設計一個「視覺隱喻」。\n2. 排版佈局：建議三種具體Infographics的構圖方式，並說明理由。\n3. 色彩與風格：建議4-6套配色方案，以及4-6種適合的藝術風格。\n請用繁體中文輸出，具備圖表特質，並為所有項目標上編號，方便我直接用代號回應.`,
+                    textSamples: [
+                        { 
+                            label: "參考資料：呼吸系統", 
+                            text: "年級：小六 P.6\n參考資料：呼吸系統主要由鼻、氣管、支氣管、肺等器官組成，負責呼吸，維持我們的生命。我們吸氣時，肋骨向上和向外移動，使胸腔擴大，讓空氣進入肺部。我們呼氣時，肋骨向下和向內移動，使胸腔縮小，空氣便從肺部排出。呼吸過程中，肺部會吸取空氣中的氧，並排出二氧化碳，當我們運動時，由於身體需要大量氧，因此呼吸速度會加快。" 
+                        }
+                    ]
                 },
                 { title: "第二步：圖像生成", prompt: `我已經決定好設計細節：[請輸入代號或文字]\n請扮演 AI 視覺工程師，回顧對話紀錄中的內容與視覺設定，為我生成一張中文的資訊圖表（Infographic）。` },
                 { title: "第三步：溫習與延伸", prompt: `根據以上資訊圖表，整合詳細溫習指令及親子活動/遊戲建議。` }
@@ -193,7 +424,7 @@
         }
     };
 
-    // ---------------- 渲染邏輯 ----------------
+    // ---------------- 渲染與互動邏輯 ----------------
 
     function switchMainTab(id, btn) {
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -227,28 +458,46 @@
         });
     }
 
+    // 動態卡片邊框邏輯修改點：讓第一個格變成 card-yellow 黃色
     function generateColsHTML(dataArray, labelText) {
-        let html = `<h4 style="margin: 10px 0; color: #666;">分類：${labelText}</h4>`;
+        let html = `<h4 style="margin: 20px 0 10px 5px; color: #4a5568; font-weight:700;">分類：${labelText}</h4>`;
         html += `<div class="column-wrapper">`;
-        dataArray.forEach(col => {
+        dataArray.forEach((col, index) => {
+            let borderClass = "card-blue";
+            if(index === 0) borderClass = "card-yellow"; // 第一格改為官方黃色
+            if(index === 1) borderClass = "card-green";  // 第二格維持綠色
+            if(index === 2) borderClass = "card-orange"; // 第三格維持橘色
+
             html += `
-                <div class="column">
+                <div class="column ${borderClass}">
                     <h3>${col.title}</h3>
                     <div class="prompt-box">
                         <div class="prompt-text">${col.prompt}</div>
                     </div>
-                    <button class="copy-btn" onclick="copy(\`${col.prompt.replace(/`/g, '\\`')}\`, this)">全部複製</button>
+                    <button class="copy-btn" ${index === 0 ? 'style="background-color:var(--goai-blue); border-color:var(--goai-blue);"' : ''} onclick="copy(\`${col.prompt.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`, this)">全部複製 </button>
                     ${col.extra ? `
                         <div class="extra-section">
                             <span class="extra-title">建議年級及課題：</span>
                             ${col.extra.map(e => `
                                 <div class="extra-item">
-                                    <span>${e.label}</span>
+                                    <span style="font-weight: 500; color: #4a5568;">${e.label}</span>
                                     <button class="copy-mini" onclick="copy(\`${e.text}\`, this)">複製</button>
                                 </div>
                             `).join('')}
                         </div>
                     ` : ''}
+
+                    ${col.textSamples ? `
+                        <div class="extra-section">
+                           <span class="extra-title">參考資料：</span>
+                           ${col.textSamples.map(s => `
+                               <div class="extra-item" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+                                   <span style="font-size: 0.95rem; color: #4a5568; line-height: 1.5; background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;">${s.text}</span>
+                                   <button class="copy-mini" style="align-self: flex-end;" onclick="copy(\`${s.text}\`, this)">複製</button>
+                               </div>
+                           `).join('')}
+                        </div>
+                     ` : ''}
                 </div>`;
         });
         html += `</div>`;
@@ -257,7 +506,7 @@
 
     // 初始化頁面內容
     window.onload = () => {
-        // 活動二
+        // 活動二 (四格漫畫)
         const act2Topic = generateColsHTML(prompts.comic.topic, "年級及主題");
         const act2Book = generateColsHTML(prompts.comic.book, "年級和課本內容");
         document.getElementById('act2-topic-content').innerHTML = act2Topic;
@@ -265,7 +514,7 @@
         document.getElementById('act2-topic').innerHTML = act2Topic;
         document.getElementById('act2-book').innerHTML = act2Book;
 
-        // 活動三
+        // 活動三 (資訊圖表)
         const act3Topic = generateColsHTML(prompts.info.topic, "年級及主題");
         const act3Book = generateColsHTML(prompts.info.book, "年級和課本內容");
         document.getElementById('act3-topic-content').innerHTML = act3Topic;
