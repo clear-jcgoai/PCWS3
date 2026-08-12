@@ -130,7 +130,17 @@
         border-radius: 50px !important; 
         box-shadow: 0 8px 20px rgba(10, 34, 102, 0.18);
     }
-
+    /* 🔒 鎖定狀態樣式 */
+    .nav-item.locked {
+        opacity: 0.55;
+        filter: grayscale(100%);
+        background-color: #e2e8f0 !important;
+        color: #64748b !important;
+    }
+    .nav-item.locked::after {
+        content: " 🔒";
+    }
+    
     /* 內容區塊 */
     .tab-content { display: none; padding: 10px 15px 40px; width: 100%; max-width: 1200px; box-sizing: border-box; }
     .tab-content.active { display: block; }
@@ -361,6 +371,39 @@
     <div id="act3-book" class="sub-section"></div>
 </section>
 
+<script>
+    // ---------------- 解鎖狀態與密碼設定 ----------------
+    let isUnlocked = false;
+    const SECRET_PASSWORD = "goai"; // 💡 請在此修改你要設定的密碼
+
+    function handleMainTabClick(id, btn) {
+        // 如果是活動一，或者已經輸入過密碼解鎖，直接切換頁籤
+        if (id === 'act1' || isUnlocked) {
+            switchMainTab(id, btn);
+            return;
+        }
+
+        // 未解鎖狀態下點擊活動二或三：提示輸入密碼
+        const userPassword = prompt("🔒 此活動已鎖定，請輸入密碼以解鎖活動二及活動三：");
+
+        if (userPassword === SECRET_PASSWORD) {
+            alert("✅ 解鎖成功！");
+            unlockAllTabs();
+            switchMainTab(id, btn);
+        } else if (userPassword !== null) {
+            alert("❌ 密碼不正確，請再試一次。");
+        }
+    }
+
+    function unlockAllTabs() {
+        isUnlocked = true;
+        // 移除活動二、三按鈕的灰色鎖定狀態
+        const nav2 = document.getElementById('nav-act2');
+        const nav3 = document.getElementById('nav-act3');
+        if (nav2) nav2.classList.remove('locked');
+        if (nav3) nav3.classList.remove('locked');
+    }
+    
 <script>
     // ---------------- 數據定義 ----------------
     const prompts = {
