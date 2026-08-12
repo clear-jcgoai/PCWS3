@@ -130,6 +130,7 @@
         border-radius: 50px !important; 
         box-shadow: 0 8px 20px rgba(10, 34, 102, 0.18);
     }
+
     /* 🔒 鎖定狀態樣式 */
     .nav-item.locked {
         opacity: 0.55;
@@ -140,7 +141,7 @@
     .nav-item.locked::after {
         content: " 🔒";
     }
-    
+
     /* 內容區塊 */
     .tab-content { display: none; padding: 10px 15px 40px; width: 100%; max-width: 1200px; box-sizing: border-box; }
     .tab-content.active { display: block; }
@@ -180,7 +181,7 @@
         box-shadow: 0 16px 35px rgba(10, 34, 102, 0.07);
     }
     
-    .card-yellow { border-top: 8px solid var(--goai-yellow); } /* 新增黃色邊框樣式 */
+    .card-yellow { border-top: 8px solid var(--goai-yellow); }
     .card-blue { border-top: 8px solid var(--goai-blue); }
     .card-green { border-top: 8px solid var(--card-green); }
     .card-orange { border-top: 8px solid var(--goai-orange); }
@@ -319,9 +320,10 @@
 </header>
 
 <nav class="main-nav">
-    <button class="nav-item active" onclick="switchMainTab('act1', this)">活動一 Flashcard 圖卡</button>
-    <button class="nav-item" onclick="switchMainTab('act2', this)">活動二 4-panel Comic 四格漫畫</button>
-    <button class="nav-item" onclick="switchMainTab('act3', this)">活動三 Infographics 資訊圖表</button> </nav>
+    <button class="nav-item active" onclick="handleMainTabClick('act1', this)">活動一 Flashcard 圖卡</button>
+    <button id="nav-act2" class="nav-item locked" onclick="handleMainTabClick('act2', this)">活動二 4-panel Comic 四格漫畫</button>
+    <button id="nav-act3" class="nav-item locked" onclick="handleMainTabClick('act3', this)">活動三 Infographics 資訊圖表</button> 
+</nav>
 
 <section id="act1" class="tab-content active">
     <div class="act1-container" style="max-width: 800px; margin: 0 auto;">
@@ -374,7 +376,7 @@
 <script>
     // ---------------- 解鎖狀態與密碼設定 ----------------
     let isUnlocked = false;
-    const SECRET_PASSWORD = "goai"; // 💡 請在此修改你要設定的密碼
+    const SECRET_PASSWORD = "1234"; // 💡 請在此修改你要設定的密碼
 
     function handleMainTabClick(id, btn) {
         // 如果是活動一，或者已經輸入過密碼解鎖，直接切換頁籤
@@ -403,8 +405,7 @@
         if (nav2) nav2.classList.remove('locked');
         if (nav3) nav3.classList.remove('locked');
     }
-    
-<script>
+
     // ---------------- 數據定義 ----------------
     const prompts = {
         comic: {
