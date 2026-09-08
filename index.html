@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>親子工作坊_視覺化學習</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <style>
     /* 1. 根據官網精準定義品牌色彩與設定 */
     :root {
@@ -302,6 +303,23 @@
         .column-wrapper { flex-direction: row; overflow-x: auto; scroll-snap-type: x mandatory; gap: 25px; padding-bottom: 15px; }
         .column { min-width: 360px; flex: 1; }
     }
+        /* 頁尾 (Footer) 樣式 - 純文字版 */
+        .site-footer {
+              width: 100%;
+              background-color: var(--white);
+              padding: 25px 20px;
+              box-sizing: border-box;
+              margin-top: auto;
+              text-align: center; /* 文字居中 */
+              border-bottom: 25px solid var(--goai-blue);
+         }
+
+        .footer-description {
+              color: #555;
+              font-size: 16px;
+              font-weight: 600;
+              margin: 0;
+         }
 </style>
 </head>
 <body>
@@ -568,5 +586,11 @@
     };
 </script>
 
+    <footer class="site-footer">
+  <p class="footer-description">
+    Parent-Child Workshop 3 · 2026/27 · CLEAR, CUHK
+  </p>
+</footer>
+    
 </body>
 </html>
