@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>親子工作坊_視覺化學習</title>
+    <title>親子工作坊：視覺化學習</title>
     <link rel="icon" href="favicon.png" type="image/png">
     <style>
     /* 1. 根據官網精準定義品牌色彩與設定 */
@@ -27,6 +27,13 @@
         flex-direction: column;
         align-items: center;
         -webkit-font-smoothing: antialiased;
+    }
+
+    main {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     /* 2. 頂部 Banner 區域 */
@@ -253,6 +260,16 @@
         color: white !important;
     }
 
+    .nav-item:focus-visible,
+    .sub-btn:focus-visible,
+    .copy-btn:focus-visible,
+    .copy-mini:focus-visible,
+    .btn-link:focus-visible,
+    #unlock-input:focus-visible {
+        outline: 3px solid var(--goai-yellow);
+        outline-offset: 3px;
+    }
+
     .extra-section { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 18px; margin-top: 20px; }
     .extra-title { font-weight: bold; font-size: 1rem; margin-bottom: 12px; color: var(--goai-blue); }
     .extra-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem; }
@@ -303,23 +320,74 @@
         .column-wrapper { flex-direction: row; overflow-x: auto; scroll-snap-type: x mandatory; gap: 25px; padding-bottom: 15px; }
         .column { min-width: 360px; flex: 1; }
     }
-        /* 頁尾 (Footer) 樣式 - 純文字版 */
-        .site-footer {
-              width: 100%;
-              background-color: var(--white);
-              padding: 25px 20px;
-              box-sizing: border-box;
-              margin-top: auto;
-              text-align: center; /* 文字居中 */
-              border-bottom: 25px solid var(--goai-blue);
-         }
 
-        .footer-description {
-              color: #555;
-              font-size: 16px;
-              font-weight: 600;
-              margin: 0;
-         }
+    /* 頁尾 (Footer) 樣式 - 純文字版 */
+    .site-footer {
+          width: 100%;
+          background-color: var(--white);
+          padding: 25px 20px;
+          box-sizing: border-box;
+          margin-top: auto;
+          text-align: center; /* 文字居中 */
+          border-bottom: 25px solid var(--goai-blue);
+     }
+
+    .footer-description {
+          color: #555;
+          font-size: 16px;
+          font-weight: 600;
+          margin: 0;
+     }
+
+    .modal {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+    .modal[hidden] { display: none; }
+    .modal-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(2, 33, 105, 0.45);
+    }
+    .modal-dialog {
+        position: relative;
+        background: var(--white);
+        border-radius: 24px;
+        padding: 28px;
+        max-width: 420px;
+        width: 100%;
+        box-shadow: 0 16px 40px rgba(10, 34, 102, 0.2);
+    }
+    .modal-dialog h2 {
+        margin: 0 0 10px;
+        color: var(--goai-blue);
+        font-size: 1.25rem;
+    }
+    .modal-dialog p { margin: 0; color: #4a5568; line-height: 1.5; }
+    .modal-dialog label { display: block; font-weight: 700; margin: 14px 0 6px; color: var(--goai-blue); }
+    #unlock-input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px 14px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-family: inherit;
+    }
+    .modal-error { color: #b91c1c; font-size: 0.9rem; margin: 8px 0 0; }
+    .modal-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        justify-content: flex-end;
+        align-items: center;
+    }
+    .modal-actions .copy-btn { width: auto; height: 44px; padding: 0 22px; }
 </style>
 </head>
 <body>
@@ -331,24 +399,25 @@
     <div class="header-container">
         <img src="logo.jpg" alt="JC GoAI Logo" class="header-logo">
         <div class="header-text">
-            <h1>親子工作坊_視覺化學習</h1>
-            <p>按活動選內容，直接到 Gemini Gems 或複製內容後貼到 AI 平台。<br>每個按鈕只複製該步驟需要貼上的文字。</p>
+            <h1>親子工作坊：視覺化學習</h1>
+            <p>按活動選內容：活動一可直接開啟 Gemini Gems。<br>活動二、三解鎖後，每個按鈕只複製該步驟需要貼上的文字，再貼到 AI 平台。</p>
         </div>
     </div>
 </header>
 
-<nav class="main-nav">
-    <button class="nav-item active" onclick="handleMainTabClick('act1', this)">活動一 Flashcard 圖卡</button>
-    <button id="nav-act2" class="nav-item locked" onclick="handleMainTabClick('act2', this)">活動二 4-panel Comic 四格漫畫</button>
-    <button id="nav-act3" class="nav-item locked" onclick="handleMainTabClick('act3', this)">活動三 Infographics 資訊圖表</button> 
+<main>
+<nav class="main-nav" role="tablist" aria-label="工作坊活動">
+    <button type="button" id="nav-act1" class="nav-item active" role="tab" aria-selected="true" aria-controls="act1" onclick="handleMainTabClick('act1', this)">活動一 Flashcard 圖卡</button>
+    <button type="button" id="nav-act2" class="nav-item locked" role="tab" aria-selected="false" aria-controls="act2" aria-disabled="true" aria-label="活動二 4-panel Comic 四格漫畫（已鎖定）" onclick="handleMainTabClick('act2', this)">活動二 4-panel Comic 四格漫畫</button>
+    <button type="button" id="nav-act3" class="nav-item locked" role="tab" aria-selected="false" aria-controls="act3" aria-disabled="true" aria-label="活動三 Infographics 資訊圖表（已鎖定）" onclick="handleMainTabClick('act3', this)">活動三 Infographics 資訊圖表</button>
 </nav>
 
-<section id="act1" class="tab-content active">
+<section id="act1" class="tab-content active" role="tabpanel" aria-labelledby="nav-act1">
     <div class="act1-container" style="max-width: 800px; margin: 0 auto;">
     <div class="column card-orange" style="margin-bottom: 25px;">
         <h2 style="font-size: 1.4rem; color: var(--goai-blue); margin-top:0; font-weight:800;">活動一：Flashcard 圖卡 Gem</h2>
         <p style="margin-bottom: 20px; color: #666; font-size: 0.95rem;">點擊下方按鈕前往專屬頁面：</p>
-        <a href="https://gemini.google.com/gem/1INCQGRKvtxrW0Gf3KrDFCB9FjBpR51w0?usp=sharing" target="_blank" class="btn-link" style="background-color: var(--goai-orange); border-color: var(--goai-orange);">🚀 啟動「Flashcard Master」</a>
+        <a href="https://gemini.google.com/gem/1INCQGRKvtxrW0Gf3KrDFCB9FjBpR51w0?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn-link" style="background-color: var(--goai-orange); border-color: var(--goai-orange);">🚀 啟動「Flashcard Master」</a>
     </div>
 
     <div style="text-align:center; margin: 30px 0; color: #cbd5e1; font-size:1.2rem;">🌟 🌟 🌟</div>
@@ -356,16 +425,16 @@
     <div class="column card-green">
         <h2 style="font-size: 1.4rem; color: var(--goai-blue); margin-top:0; font-weight:800;">附加活動：四格漫畫 Gem</h2>
         <p style="margin-bottom: 20px; color: #666; font-size: 0.95rem;">點擊下方按鈕前往專屬頁面：</p>
-        <a href="https://gemini.google.com/gem/1k7j3Eg7lq15NJsgP1OLRnVCY7Ba__G5D?usp=sharing" target="_blank" class="btn-link" style="background-color: var(--card-green); border-color: var(--card-green);">🎨 啟動「四格漫畫家」</a>
+        <a href="https://gemini.google.com/gem/1k7j3Eg7lq15NJsgP1OLRnVCY7Ba__G5D?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn-link" style="background-color: var(--card-green); border-color: var(--card-green);">🎨 啟動「四格漫畫家」</a>
     </div>
 </div>
 </section>
 
-<section id="act2" class="tab-content">
+<section id="act2" class="tab-content" role="tabpanel" aria-labelledby="nav-act2" hidden>
     <div class="sub-nav">
-        <button class="sub-btn active" onclick="switchSubTab('act2', 'all', this)">全部</button>
-        <button class="sub-btn" onclick="switchSubTab('act2', 'topic', this)">年級及主題</button>
-        <button class="sub-btn" onclick="switchSubTab('act2', 'book', this)">年級和課本內容</button>
+        <button type="button" class="sub-btn active" onclick="switchSubTab('act2', 'all', this)">全部</button>
+        <button type="button" class="sub-btn" onclick="switchSubTab('act2', 'topic', this)">年級及主題</button>
+        <button type="button" class="sub-btn" onclick="switchSubTab('act2', 'book', this)">年級和課本內容</button>
     </div>
     
     <div id="act2-all" class="sub-section active">
@@ -376,11 +445,11 @@
     <div id="act2-book" class="sub-section"></div>
 </section>
 
-<section id="act3" class="tab-content">
+<section id="act3" class="tab-content" role="tabpanel" aria-labelledby="nav-act3" hidden>
     <div class="sub-nav">
-        <button class="sub-btn active" onclick="switchSubTab('act3', 'all', this)">全部</button>
-        <button class="sub-btn" onclick="switchSubTab('act3', 'topic', this)">年級及主題</button>
-        <button class="sub-btn" onclick="switchSubTab('act3', 'book', this)">年級和課本內容</button>
+        <button type="button" class="sub-btn active" onclick="switchSubTab('act3', 'all', this)">全部</button>
+        <button type="button" class="sub-btn" onclick="switchSubTab('act3', 'topic', this)">年級及主題</button>
+        <button type="button" class="sub-btn" onclick="switchSubTab('act3', 'book', this)">年級和課本內容</button>
     </div>
     
     <div id="act3-all" class="sub-section active">
@@ -390,38 +459,102 @@
     <div id="act3-topic" class="sub-section"></div>
     <div id="act3-book" class="sub-section"></div>
 </section>
+</main>
+
+<div id="unlock-modal" class="modal" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="unlock-title">
+        <h2 id="unlock-title">解鎖活動二及活動三</h2>
+        <p>此活動已鎖定，請輸入密碼。</p>
+        <label for="unlock-input">密碼</label>
+        <input id="unlock-input" type="password" autocomplete="off">
+        <p id="unlock-error" class="modal-error" hidden>密碼不正確，請再試一次。</p>
+        <div class="modal-actions">
+            <button type="button" class="copy-mini" data-close-modal>取消</button>
+            <button type="button" class="copy-btn" id="unlock-submit">解鎖</button>
+        </div>
+    </div>
+</div>
 
 <script>
     // ---------------- 解鎖狀態與密碼設定 ----------------
     let isUnlocked = false;
+    let pendingUnlockBtn = null;
     const SECRET_PASSWORD = "goai"; // 💡 請在此修改你要設定的密碼
+    const UNLOCK_STORAGE_KEY = "pcws3-unlock-password";
+
+    function escapeHtml(str) {
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    function saveUnlockPassword() {
+        try {
+            sessionStorage.setItem(UNLOCK_STORAGE_KEY, SECRET_PASSWORD);
+        } catch (e) {}
+    }
+
+    function restoreUnlockFromSession() {
+        try {
+            return sessionStorage.getItem(UNLOCK_STORAGE_KEY) === SECRET_PASSWORD;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    function openUnlockModal(btn) {
+        pendingUnlockBtn = btn;
+        const modal = document.getElementById('unlock-modal');
+        const input = document.getElementById('unlock-input');
+        const err = document.getElementById('unlock-error');
+        err.hidden = true;
+        input.value = '';
+        modal.hidden = false;
+        input.focus();
+    }
+
+    function closeUnlockModal() {
+        document.getElementById('unlock-modal').hidden = true;
+        pendingUnlockBtn = null;
+    }
+
+    function submitUnlock() {
+        const input = document.getElementById('unlock-input');
+        const err = document.getElementById('unlock-error');
+        const btn = pendingUnlockBtn;
+        if (input.value === SECRET_PASSWORD) {
+            err.hidden = true;
+            unlockAllTabs();
+            saveUnlockPassword();
+            closeUnlockModal();
+            if (btn) switchMainTab(btn.getAttribute('aria-controls'), btn);
+        } else {
+            err.hidden = false;
+            input.focus();
+            input.select();
+        }
+    }
 
     function handleMainTabClick(id, btn) {
-        // 如果是活動一，或者已經輸入過密碼解鎖，直接切換頁籤
         if (id === 'act1' || isUnlocked) {
             switchMainTab(id, btn);
             return;
         }
-
-        // 未解鎖狀態下點擊活動二或三：提示輸入密碼
-        const userPassword = prompt("🔒 此活動已鎖定，請輸入密碼以解鎖活動二及活動三：");
-
-        if (userPassword === SECRET_PASSWORD) {
-            alert("✅ 解鎖成功！");
-            unlockAllTabs();
-            switchMainTab(id, btn);
-        } else if (userPassword !== null) {
-            alert("❌ 密碼不正確，請再試一次。");
-        }
+        openUnlockModal(btn);
     }
 
     function unlockAllTabs() {
         isUnlocked = true;
-        // 移除活動二、三按鈕的灰色鎖定狀態
-        const nav2 = document.getElementById('nav-act2');
-        const nav3 = document.getElementById('nav-act3');
-        if (nav2) nav2.classList.remove('locked');
-        if (nav3) nav3.classList.remove('locked');
+        ['nav-act2', 'nav-act3'].forEach((id) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.classList.remove('locked');
+            el.setAttribute('aria-disabled', 'false');
+            el.setAttribute('aria-label', el.textContent.trim());
+        });
     }
 
     // ---------------- 數據定義 ----------------
@@ -430,14 +563,14 @@
             topic: [
                 {
                     title: "第一步：內容生成",
-                    prompt: `你現在是一位專業的四格漫畫（4-panel Comic）家，擅長將艱澀知識拆解為容易理解的四格漫畫。\n請針對以下年級及主題，為我整理出適合製作成四格漫畫的內容：\n- 年級：[請輸入年級]\n- 主題：[請輸入主題]\n請針對以上資訊，提供以下內容：\n1. 構思內容：用一句話概括這張漫畫要傳達的核心訊息，根據年級程度，提供 3-5 組故事方案。每組需簡述四格內容（起、承、轉、合），包括角色、對白或旁白以及核心學習內容。\n2. 色彩與風格：建議4-6套適合漫畫的色彩組合，以及4-6種適合的漫畫風格。\n請使用繁體中文輸出，具備漫畫敘事特質，並所有項目標上編號，方便我直接用代號回應。`,
+                    prompt: `你現在是一位專業的四格漫畫（4-panel Comic）家，擅長將艱澀知識拆解為容易理解的四格漫畫。\n請針對以下年級及主題，為我整理出適合製作成四格漫畫的內容：\n- 年級：[請輸入年級]\n- 主題：[請輸入主題]\n請針對以上資訊，提供以下內容：\n1. 構思內容：用一句話概括這張漫畫要傳達的核心訊息，根據年級程度，提供 3-5 組故事方案。每組需簡述四格內容（起、承、轉、合），包括角色、對白或旁白以及核心學習內容。\n2. 色彩與風格：建議4-6套適合漫畫的色彩組合，以及4-6種適合的漫畫風格。\n請使用繁體中文輸出，具備漫畫敘事特質，並為所有項目標上編號，方便我直接用代號回應。`,
                     extra: [
                         { label: "P.4 熱的傳導", text: "年級：小四 P.4\n主題：熱的傳導（Conduction）" },
                         { label: "P.5 空氣污染", text: "年級：小五 P.5\n主題：空氣污染(Air Pollution)" },
                         { label: "P.6 閉合電路", text: "年級：小六 P.6\n主題：閉合電路（Closed Circuit）" },
                         { label: "S.1 水資源危機", text: "年級：中一 S.1\n主題：水資源危機（Water Scarcity）" },
                         { label: "S.2 近視的成因", text: "年級：中二 S.2\n主題：近視的成因(Causes of Short-sight)" },
-                        { label: "S.2 牛頓第一定律", text: "年級：小五 S.2\n主題：牛頓第一定律（Law of Inertia）" }
+                        { label: "S.2 牛頓第一定律", text: "年級：中二 S.2\n主題：牛頓第一定律（Law of Inertia）" }
                     ]
                 },
                 { title: "第二步：圖像生成", prompt: `我已經決定好設計細節：[請輸入代號或文字]\n請扮演 AI 視覺工程師，回顧對話紀錄中的內容與視覺設定，為我生成一張中文的四格漫畫（4-panel Comic）。` },
@@ -446,7 +579,7 @@
             book: [
                 {
                     title: "第一步：內容生成",
-                    prompt: `你現在是一位專業的四格漫畫（4-panel Comic）家，擅長將艱澀知識拆解為容易理解的四格漫畫。\n請針對以下年級及資料，為我整理出適合製作成四格漫畫的內容：\n- 年級：[請輸入年級]\n- 參考資料：[請提供課本文字內容或上傳照片]\n請針對以上資訊，提供以下內容：\n1. 知識提取：若我提供的是圖片，請先列出你從圖中識別出的 3 個關鍵知識點，確保內容準確。\n2. 構思內容：用一句話概括這張漫畫要傳達的核心訊息，根據年級程度，提供 3-5 組故事方案。每組需簡述四格內容（起、承、轉、合），包括角色、對白或旁白以及核心學習內容。\n3. 色彩與風格：建議4-6套適合漫畫的色彩組合，以及4-6種適合的漫畫風格。\n請使用繁體中文輸出，具備漫畫敘事特質，並所有項目標上編號，方便我直接用代號回應。`
+                    prompt: `你現在是一位專業的四格漫畫（4-panel Comic）家，擅長將艱澀知識拆解為容易理解的四格漫畫。\n請針對以下年級及資料，為我整理出適合製作成四格漫畫的內容：\n- 年級：[請輸入年級]\n- 參考資料：[請提供課本文字內容或上傳照片]\n請針對以上資訊，提供以下內容：\n1. 知識提取：若我提供的是圖片，請先列出你從圖中識別出的 3 個關鍵知識點，確保內容準確。\n2. 構思內容：用一句話概括這張漫畫要傳達的核心訊息，根據年級程度，提供 3-5 組故事方案。每組需簡述四格內容（起、承、轉、合），包括角色、對白或旁白以及核心學習內容。\n3. 色彩與風格：建議4-6套適合漫畫的色彩組合，以及4-6種適合的漫畫風格。\n請使用繁體中文輸出，具備漫畫敘事特質，並為所有項目標上編號，方便我直接用代號回應。`
                 },
                 { title: "第二步：圖像生成", prompt: `我已經決定好設計細節：[請輸入代號或文字]\n請扮演 AI 視覺工程師，回顧對話紀錄中的內容與視覺設定，為我生成一張中文的四格漫畫（4-panel Comic）。` },
                 { title: "第三步：溫習與延伸", prompt: `根據以上四格漫畫，整合詳細溫習指令及親子活動/遊戲建議。` }
@@ -456,14 +589,14 @@
             topic: [
                 {
                     title: "第一步：內容生成",
-                    prompt: `你現在是一位專業的資訊圖表（Infographic）設計顧問，擅長將深奧知識轉化為視覺化的教育素材 。\n請針對以下年級及主題，為我整理出適合製作成資訊圖表的內容：\n- 年級：[請輸入年級]\n- 主題：[請輸入主題]\n請針對以上資訊，提供以下內容：\n1. 構思內容：用一句話概括這張圖表要解決什麼問題, 並根據年級程度，提供 3-5 個最重要的核心知識點和解釋說明，為每個點設計一個「視覺隱喻」。\n2. 排版佈局：建議三種具體Infographics的構圖方式，並說明理由。\n3. 色彩與風格：建議4-6套配色方案，以及4-6種適合的藝術風格。\n請用繁體中文輸出，具備圖表特質，並所有項目標上編號，方便我直接用代號回應。`,
+                    prompt: `你現在是一位專業的資訊圖表（Infographic）設計顧問，擅長將深奧知識轉化為視覺化的教育素材。\n請針對以下年級及主題，為我整理出適合製作成資訊圖表的內容：\n- 年級：[請輸入年級]\n- 主題：[請輸入主題]\n請針對以上資訊，提供以下內容：\n1. 構思內容：用一句話概括這張圖表要解決什麼問題，並根據年級程度，提供 3-5 個最重要的核心知識點和解釋說明，為每個點設計一個「視覺隱喻」。\n2. 排版佈局：建議三種具體Infographics的構圖方式，並說明理由。\n3. 色彩與風格：建議4-6套配色方案，以及4-6種適合的藝術風格。\n請用繁體中文輸出，具備圖表特質，並為所有項目標上編號，方便我直接用代號回應。`,
                     extra: [
                         { label: "P.4 簡易電路原理", text: "年級：小四 P.4\n主題：簡易電路原理 (電池、電線、燈泡)" },
                         { label: "P.5 光合作用", text: "年級：小五 P.5\n主題：光合作用 (植物能量轉換)" },
                         { label: "P.6 呼吸系統", text: "年級：小六 P.6\n主題：人體呼吸系統 (肺部運作原理)" },
                         { label: "S.1 細胞結構", text: "年級：中一 S.1\n主題：細胞結構 (動物 vs 植物細胞)" },
                         { label: "S.2 司法制度", text: "年級：中二 S.2\n主題：香港司法制度簡介 (法律的階梯)" },
-                        { label: "S.3 全球暖化", text: "年級：中三 S.3\n主題：全球暖化 (鎖反應與回饋機制)" }
+                        { label: "S.3 全球暖化", text: "年級：中三 S.3\n主題：全球暖化（連鎖反應與回饋機制）" }
                     ]
                 },
                 { title: "第二步：圖像生成", prompt: `我已經決定好設計細節：[請輸入代號或文字]\n請扮演 AI 視覺工程師，回顧對話紀錄中的內容與視覺設定，為我生成一張中文的資訊圖表（Infographic）。` },
@@ -472,7 +605,7 @@
             book: [
                 {
                     title: "第一步：內容生成",
-                    prompt: `你現在是一位專業的資訊圖表（Infographic）設計顧問 ，擅長將深奧知識轉化為視覺化的教育素材 。\n請針對以下年級及資料，為我整理出適合製作成資訊圖表的內容：\n- 年級：[請輸入年級]\n- 參考資料：[請提供課本文字內容或上傳照片]\n請針對以上資訊，提供以下內容：\n1. 整理資料：用一句話概括這張圖表要解決什麼問題, 並根據年級程度，從資料/圖片中提取 3-5 個最重要的核心知識點，為每個點設計一個「視覺隱喻」。\n2. 排版佈局：建議三種具體Infographics的構圖方式，並說明理由。\n3. 色彩與風格：建議4-6套配色方案，以及4-6種適合的藝術風格。\n請用繁體中文輸出，具備圖表特質，並為所有項目標上編號，方便我直接用代號回應.`,
+                    prompt: `你現在是一位專業的資訊圖表（Infographic）設計顧問，擅長將深奧知識轉化為視覺化的教育素材。\n請針對以下年級及資料，為我整理出適合製作成資訊圖表的內容：\n- 年級：[請輸入年級]\n- 參考資料：[請提供課本文字內容或上傳照片]\n請針對以上資訊，提供以下內容：\n1. 整理資料：用一句話概括這張圖表要解決什麼問題，並根據年級程度，從資料/圖片中提取 3-5 個最重要的核心知識點，為每個點設計一個「視覺隱喻」。\n2. 排版佈局：建議三種具體Infographics的構圖方式，並說明理由。\n3. 色彩與風格：建議4-6套配色方案，以及4-6種適合的藝術風格。\n請用繁體中文輸出，具備圖表特質，並為所有項目標上編號，方便我直接用代號回應。`,
                     textSamples: [
                         { 
                             label: "參考資料：呼吸系統", 
@@ -489,10 +622,17 @@
     // ---------------- 渲染與互動邏輯 ----------------
 
     function switchMainTab(id, btn) {
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        btn.classList.add('active');
+        document.querySelectorAll('.tab-content').forEach((c) => {
+            const on = c.id === id;
+            c.classList.toggle('active', on);
+            if (on) c.removeAttribute('hidden');
+            else c.setAttribute('hidden', '');
+        });
+        document.querySelectorAll('.nav-item').forEach((n) => {
+            const on = n === btn;
+            n.classList.toggle('active', on);
+            n.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
     }
 
     function switchSubTab(actId, subId, btn) {
@@ -509,41 +649,64 @@
     }
 
     function copy(text, btn) {
-        navigator.clipboard.writeText(text).then(() => {
-            const original = btn.innerText;
+        const original = btn.innerText;
+        const ok = () => {
             btn.innerText = "✅ 已複製";
             btn.classList.add('copied');
             setTimeout(() => {
                 btn.innerText = original;
                 btn.classList.remove('copied');
             }, 2000);
-        });
+        };
+        const fail = () => {
+            btn.innerText = "❌ 複製失敗，請手動選取文字";
+            setTimeout(() => { btn.innerText = original; }, 2500);
+        };
+        function fallback() {
+            try {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.setAttribute('readonly', '');
+                ta.style.cssText = 'position:fixed;left:-9999px;top:0';
+                document.body.appendChild(ta);
+                ta.select();
+                const success = document.execCommand('copy');
+                document.body.removeChild(ta);
+                success ? ok() : fail();
+            } catch (e) {
+                fail();
+            }
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(ok).catch(fallback);
+        } else {
+            fallback();
+        }
     }
 
-    // 動態卡片邊框邏輯修改點：讓第一個格變成 card-yellow 黃色
     function generateColsHTML(dataArray, labelText) {
-        let html = `<h4 style="margin: 20px 0 10px 5px; color: #4a5568; font-weight:700;">分類：${labelText}</h4>`;
+        let html = `<h4 style="margin: 20px 0 10px 5px; color: #4a5568; font-weight:700;">分類：${escapeHtml(labelText)}</h4>`;
         html += `<div class="column-wrapper">`;
         dataArray.forEach((col, index) => {
             let borderClass = "card-blue";
-            if(index === 0) borderClass = "card-yellow"; // 第一格改為官方黃色
-            if(index === 1) borderClass = "card-green";  // 第二格維持綠色
-            if(index === 2) borderClass = "card-orange"; // 第三格維持橘色
+            if(index === 0) borderClass = "card-yellow";
+            if(index === 1) borderClass = "card-green";
+            if(index === 2) borderClass = "card-orange";
 
             html += `
                 <div class="column ${borderClass}">
-                    <h3>${col.title}</h3>
+                    <h3>${escapeHtml(col.title)}</h3>
                     <div class="prompt-box">
-                        <div class="prompt-text">${col.prompt}</div>
+                        <div class="prompt-text">${escapeHtml(col.prompt)}</div>
                     </div>
-                    <button class="copy-btn" ${index === 0 ? 'style="background-color:var(--goai-blue); border-color:var(--goai-blue);"' : ''} onclick="copy(\`${col.prompt.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`, this)">全部複製 </button>
+                    <button type="button" class="copy-btn" data-copy="${encodeURIComponent(col.prompt)}">全部複製 </button>
                     ${col.extra ? `
                         <div class="extra-section">
                             <span class="extra-title">建議年級及課題：</span>
                             ${col.extra.map(e => `
                                 <div class="extra-item">
-                                    <span style="font-weight: 500; color: #4a5568;">${e.label}</span>
-                                    <button class="copy-mini" onclick="copy(\`${e.text}\`, this)">複製</button>
+                                    <span style="font-weight: 500; color: #4a5568;">${escapeHtml(e.label)}</span>
+                                    <button type="button" class="copy-mini" data-copy="${encodeURIComponent(e.text)}">複製</button>
                                 </div>
                             `).join('')}
                         </div>
@@ -554,8 +717,8 @@
                            <span class="extra-title">參考資料：</span>
                            ${col.textSamples.map(s => `
                                <div class="extra-item" style="flex-direction: column; align-items: flex-start; gap: 8px;">
-                                   <span style="font-size: 0.95rem; color: #4a5568; line-height: 1.5; background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;">${s.text}</span>
-                                   <button class="copy-mini" style="align-self: flex-end;" onclick="copy(\`${s.text}\`, this)">複製</button>
+                                   <span style="font-size: 0.95rem; color: #4a5568; line-height: 1.5; background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;">${escapeHtml(s.text)}</span>
+                                   <button type="button" class="copy-mini" style="align-self: flex-end;" data-copy="${encodeURIComponent(s.text)}">複製</button>
                                </div>
                            `).join('')}
                         </div>
@@ -568,7 +731,24 @@
 
     // 初始化頁面內容
     window.onload = () => {
-        // 活動二 (四格漫畫)
+        document.getElementById('unlock-submit').addEventListener('click', submitUnlock);
+        document.getElementById('unlock-input').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') submitUnlock();
+        });
+        document.querySelectorAll('[data-close-modal]').forEach((el) => {
+            el.addEventListener('click', closeUnlockModal);
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !document.getElementById('unlock-modal').hidden) {
+                closeUnlockModal();
+            }
+        });
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-copy]');
+            if (!btn) return;
+            copy(decodeURIComponent(btn.getAttribute('data-copy')), btn);
+        });
+
         const act2Topic = generateColsHTML(prompts.comic.topic, "年級及主題");
         const act2Book = generateColsHTML(prompts.comic.book, "年級和課本內容");
         document.getElementById('act2-topic-content').innerHTML = act2Topic;
@@ -576,19 +756,22 @@
         document.getElementById('act2-topic').innerHTML = act2Topic;
         document.getElementById('act2-book').innerHTML = act2Book;
 
-        // 活動三 (資訊圖表)
         const act3Topic = generateColsHTML(prompts.info.topic, "年級及主題");
         const act3Book = generateColsHTML(prompts.info.book, "年級和課本內容");
         document.getElementById('act3-topic-content').innerHTML = act3Topic;
         document.getElementById('act3-book-content').innerHTML = act3Book;
         document.getElementById('act3-topic').innerHTML = act3Topic;
         document.getElementById('act3-book').innerHTML = act3Book;
+
+        if (restoreUnlockFromSession()) {
+            unlockAllTabs();
+        }
     };
 </script>
 
     <footer class="site-footer">
   <p class="footer-description">
-    Parent-Child Workshop 3 · 2026/27 · CLEAR, CUHK
+    Parent-Child Workshop 3 · CLEAR, CUHK
   </p>
 </footer>
     
